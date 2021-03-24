@@ -108,4 +108,22 @@ def dict2ntuple(ndict):
     return ndict
 
 
+def name_data(voluntary, key):
+    
+    data_path = '/Users/User/OneDrive/TCC/ema_motion_analysis_imu/data/'
 
+    if key == 'S1_Synched':
+        name = 'S1'
+        sincro = '_Synched'
+    
+    elif key == 'S2_Synched':
+        name = 'S2'
+        sincro = '_Synched'
+
+    else:
+        name = key
+        sincro = ''
+
+    arquivo = name + '_Subject_' + voluntary + sincro + '_Sit_and_Stand.csv'
+    
+    return arquivo, name, sincro

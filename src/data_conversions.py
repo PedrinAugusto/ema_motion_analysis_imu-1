@@ -29,4 +29,4 @@ def acc_to_angle(data):
     angle_rad = np.arccos(x)
     angle = np.rad2deg((np.arccos(x)))
     
-    return angle_rad, angle
+    return angle_rad[:,0], angle[:,0]

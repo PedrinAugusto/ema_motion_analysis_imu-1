@@ -1,0 +1,165 @@
+import numpy as np
+import pandas as pd
+import math
+import matplotlib.pyplot as plt
+import scipy.io as sio
+import scipy.signal as signal
+from pathlib import Path
+from scipy.signal import medfilt
+from scipy.signal import sosfiltfilt, butter
+
+
+
+def spectrum_periodogram_complete(data, freq_amostragem, grafico = 'pot'):
+    
+    ''' Entrada: Dados com todos os sensores np.shape([:,0:27]) '''
+    ''' Entrada: tipo de gráfico pot(somente o da densidade de potência), log(gráfico de densidade em log)'''
+    '''          pot_log(Os dois gráficos). Por padrão será apenas o gráfico normal '''
+    ''' Saídas: Gráficos de Densidade Espectral de Potência '''
+    
+    eixos = ['eixo x', 'eixo y', 'eixo z']
+    sensors_names = ['Hip', 'RightUpLeg', 'LeftUpLeg', 'Head', 'Neck', 'Spine3', 'Spine2', 'Spine1', 'Spine']
+    
+
+    if grafico == 'pot':
+        for k in range(len(sensors_names)):
+            for i in range(len(eixos)):
+                f, Pper_spec = signal.periodogram(data.iloc[:,k*3+i].values, freq_amostragem, 'flattop', scaling='density')
+                plt.plot(f, Pper_spec, label = eixos[i])
+            plt.legend()
+            plt.title(sensors_names[k])
+            plt.xlabel('Frequência [Hz]')
+            plt.ylabel('Densidade Espectral de Potência')
+            plt.grid()
+            plt.show()
+            i = 0
+        
+    if grafico == 'log':
+        for k in range(len(sensors_names)):
+            for i in range(len(eixos)):
+                f, Pper_spec = signal.periodogram(data.iloc[:,k*3+i].values, freq_amostragem, 'flattop', scaling='density')
+                plt.semilogy(f, Pper_spec, label = eixos[i])
+            plt.legend()
+            plt.title(sensors_names[k])
+            plt.xlabel('Frequência [Hz]')
+            plt.ylabel('Densidade Espectral de Potência')
+            plt.grid()
+            plt.show()
+            i = 0
+            
+    if grafico == 'pot_log':
+        for k in range(len(sensors_names)):
+            for i in range(len(eixos)):
+                f, Pper_spec = signal.periodogram(data.iloc[:,k*3+i].values, freq_amostragem, 'flattop', scaling='density')
+                plt.semilogy(f, Pper_spec, label = eixos[i])
+            plt.legend()
+            plt.title(sensors_names[k])
+            plt.xlabel('Frequência [Hz]')
+            plt.ylabel('Densidade Espectral de Potência')
+            plt.grid()
+            plt.show()
+            i = 0
+            for j in range(len(eixos)):
+                f, Pper_spec = signal.periodogram(data.iloc[:,k*3+j].values, freq_amostragem, 'flattop', scaling='density')
+                plt.plot(f, Pper_spec, label = eixos[j])
+            plt.legend()
+            plt.title(sensors_names[k])
+            plt.xlabel('Frequência [Hz]')
+            plt.ylabel('Densidade Espectral de Potência')
+            plt.grid()
+            plt.show()
+            i = 0
+
+
+def spectrum_periodogram(data, freq_amostragem, title = 'Sem Título'):
+    eixos = ['eixo x', 'eixo y', 'eixo z']
+    for i in range(len(eixos)):
+        f, Pper_spec = signal.periodogram(data[:,i], freq_amostragem, 'flattop', scaling='density')
+        plt.plot(f, Pper_spec, label = eixos[i])
+    plt.legend()
+    plt.title(title)
+    plt.xlabel('Frequência [Hz]')
+    plt.ylabel('Densidade Espectral de Potência')
+    plt.grid()
+    plt.show()
+    i = 0
+    
+    for i in range(len(eixos)):
+        f, Pper_spec = signal.periodogram(data[:,i], freq_amostragem, 'flattop', scaling='density')
+        plt.semilogy(f, Pper_spec, label = eixos[i])
+    plt.legend()
+    plt.title(title)
+    plt.xlabel('Frequência [Hz]')
+    plt.ylabel('Densidade Espectral de Potência')
+    plt.grid()
+    plt.show()
+    i = 0
+
+
+def spectrum_periodogram_reduced(data, freq_amostragem, title = 'Sem Título'):
+    eixos = ['eixo x', 'eixo y', 'eixo z']
+    for i in range(len(eixos)):
+        f, Pper_spec = signal.periodogram(data[:,i], freq_amostragem, 'flattop', scaling='density')
+        vetor_f = []
+        vetor_Pper = []
+        for j in range(len(f)):
+            if f[j] < 5:
+                vetor_f.append(f[j])
+                vetor_Pper.append(Pper_spec[j])
+        
+        plt.plot(vetor_f, vetor_Pper, label = eixos[i])
+    plt.legend()
+    plt.title(title)
+    plt.xlabel('Frequência [Hz]')
+    plt.ylabel('Densidade Espectral de Potência')
+    plt.grid()
+    plt.show()
+    i = 0
+    
+    #for i in range(len(eixos)):
+    #    f, Pper_spec = signal.periodogram(data[:,i], freq_amostragem, 'flattop', scaling='spectrum')
+    #    vetor_f = []
+    #    vetor_Pper = []
+    #    for j in range(len(f)):
+    #        if f[j] < 3:
+    #            vetor_f.append(f[j])
+    #            vetor_Pper.append(Pper_spec[j])
+    #    
+    #    plt.semilogy(vetor_f, vetor_Pper, label = eixos[i])
+    #plt.legend()
+    #plt.title(title)
+    #plt.xlabel('Frequência [Hz]')
+    #plt.ylabel('Densidade Espectral de Potência')
+    #plt.grid()
+    #plt.show()
+    #i = 0
+
+
+
+def plot_filter_butter(ordem, freq_corte):
+    b, a = signal.butter(ordem, freq_corte, 'low', analog=True)
+    w, h = signal.freqs(b, a)
+    plt.semilogx(w, 20 * np.log10(abs(h)))
+    plt.title('Resposta em frequência do filtro Butterworth')
+    plt.xlabel('Frequency [radians / second]')
+    plt.ylabel('Amplitude [dB]')
+    plt.margins(0, 0.1)
+    plt.grid(which='both', axis='both')
+    plt.axvline(100, color='green') # cutoff frequency
+    plt.show()
+
+
+
+def plot_comp_filter(t, data, data_filter, title = 'Sem Título'):
+    plt.figure(figsize=[15,8])
+    plt.subplot(111)
+
+    plt.plot(t, data_filter, label = 'Com filtro')
+    plt.plot(t, data, label = 'Sem filtro')
+    plt.legend()
+    plt.title(title)
+    plt.grid()
+    plt.show()
+
+
+
