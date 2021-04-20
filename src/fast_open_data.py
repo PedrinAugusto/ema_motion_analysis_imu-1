@@ -1,13 +1,13 @@
 import numpy as np
 import pandas as pd
 import math
-import matplotlib.pyplot as plt
-import scipy.io as sio
-import scipy.signal as signal
+#import matplotlib.pyplot as plt
+#import scipy.io as sio
+#import scipy.signal as signal
 from pathlib import Path
-from scipy.spatial.distance import euclidean
-from scipy.signal import medfilt
-from scipy.signal import sosfiltfilt, butter
+#from scipy.spatial.distance import euclidean
+#from scipy.signal import medfilt
+#from scipy.signal import sosfiltfilt, butter
 
 import sys
 sys.path.append("../src")
@@ -19,7 +19,7 @@ from filters import filter_butter
 
 
 def open_data_filter(voluntary = 52, key = 'S1_Synched', freq_amostragem = 120, ordem = 2, freq_corte_Leg = 0.7,
-                    freq_corte_Spine = 1.3, type_return = 'grau'):
+                    freq_corte_Spine = 1.3, type_return = 'grau', angle_not_filter = False):
     '''Entrada: Número do voluntário -> int(1 até 90)'''
     '''Entrada: Nome da repetição -> str('S1_Synched', 'S2_Synched', 'I1', 'I2', 'S1', 'S2')'''
     '''Entrada: Frequência de amostragem -> int'''
@@ -52,11 +52,19 @@ def open_data_filter(voluntary = 52, key = 'S1_Synched', freq_amostragem = 120, 
     # Vetor de tempo
     t = np.linspace(0, len(angle_RightUpLeg_filter) / freq_amostragem, len(angle_RightUpLeg_filter))
     
+    if angle_not_filter == True:
+    	rad_Spine, angle_Spine = acc_to_angle(Spine)
+    	rad_RightUpLeg, angle_RightUpLeg = acc_to_angle(RightUpLeg)
+    	rad_LeftUpLeg, angle_LeftUpLeg = acc_to_angle(LeftUpLeg)
+
+    	return angle_Spine, angle_RightUpLeg, angle_LeftUpLeg
+
     if type_return == 'grau':
         return angle_Spine_filter, angle_RightUpLeg_filter, angle_LeftUpLeg_filter
     if type_return == 'rad':
         return rad_Spine_filter, rad_RightUpLeg_filter, rad_LeftUpLeg_filter
     if type_return == 'grau_and_rad':
         return angle_Spine_filter, angle_RightUpLeg_filter, angle_LeftUpLeg_filter, rad_Spine_filter, rad_RightUpLeg_filter, rad_LeftUpLeg_filter
+    
     else: 
         return False
