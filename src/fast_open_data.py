@@ -1,14 +1,9 @@
 import numpy as np
 import pandas as pd
 import math
-#import matplotlib.pyplot as plt
-#import scipy.io as sio
-#import scipy.signal as signal
 from pathlib import Path
-#from scipy.spatial.distance import euclidean
-#from scipy.signal import medfilt
-#from scipy.signal import sosfiltfilt, butter
 
+import os
 import sys
 sys.path.append("../src")
 from conversion_mat_to_py import mat2dict, pretty_dict, matobj2dict, dict2ntuple, name_data
@@ -32,8 +27,27 @@ def open_data_filter(voluntary = 52, key = 'S1_Synched', freq_amostragem = 120, 
     voluntary = str(voluntary)
     archive, name, sincro = name_data(voluntary, key)
     
-    data_path = '/Users/User/OneDrive/TCC/ema_motion_analysis_imu/data/'
-    data = pd.read_csv(data_path + archive, sep = ';')
+
+    try:
+    	data_path = '/Users/User/OneDrive/TCC/ema_motion_analysis_imu/dota/'
+    	data = pd.read_csv(data_path + archive, sep = ';')
+    except FileNotFoundError:
+    	try:
+    		sys.path.append("../data/")
+    		data_path = '../data/'
+    		path_and_archive = os.path.join(data_path, archive)
+    		data = pd.read_csv(path_and_archive, sep = ';')
+    		print('Exemplo do Git Hub')
+
+    	except:
+    		data_path_1 = os.getcwd()
+    		sys.path.append("../data/")
+    		data_path = '../data/'
+    		path_and_archive = os.path.join(data_path, archive)
+    		data = pd.read_csv(path_and_archive, sep = ';')
+    		print('Exemplo do Git Hub 2')
+
+    
     
     RightUpLeg = data.iloc[:,3:6].values
     LeftUpLeg = data.iloc[:,6:9].values
