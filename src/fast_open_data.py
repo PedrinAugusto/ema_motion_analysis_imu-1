@@ -29,7 +29,7 @@ def open_data_filter(voluntary = 52, key = 'S1_Synched', freq_amostragem = 120, 
     
 
     try:
-    	data_path = '/Users/User/OneDrive/TCC/ema_motion_analysis_imu/dota/'
+    	data_path = '/Users/User/OneDrive/TCC/ema_motion_analysis_imu/data/'
     	data = pd.read_csv(data_path + archive, sep = ';')
     except FileNotFoundError:
     	try:
