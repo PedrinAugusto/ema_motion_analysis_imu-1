@@ -9,7 +9,17 @@ O projeto foi realizado de duas maneiras, fazendo a análise do movimento após 
 # Dependências 
 
 - Numpy (pip install numpy)
+- Pandas (pip install pandas)
 - Matplotlib (pip install matplotlib)
 - Opencv (pip install opencv-python)
 - Pykalman (pip install pykalman)
+- Math (pip install math)
+- Scipy (pip install scipy)
+- Pathlib (pip install pathlib)
+- Os (pip install os)
+- Sys (pip install sys)
+- Collections (pip install collections)
+- Re (pip install re)
+- Fastdtw (pip install fastdtw)
+- Dtw (pip install dtw)
 
