@@ -18,7 +18,7 @@ Os dados de aceleração foram convertidos em dados de ângulos, de forma que a 
 
 Este trabalho está situado em um projeto maior, [Project EMA website](http://projectema.com), onde a análise de movimento é usada para avaliar os parâmetros de controle do movimento de eletroestimulação em atletas com lesão medular.
 
-O projeto foi realizado de duas maneiras, fazendo a análise do movimento após a aquisição dos dados (offline) e fazendo a análise do movimento durante a aquisição de dados (online). Para o método offline utilizou-se o algoritmo DTW e para o método online utilizou-se o algoritmo IMM. 
+O projeto foi realizado de duas maneiras, fazendo a análise do movimento após a aquisição dos dados (offline) e fazendo a análise do movimento durante a aquisição de dados (online). Para o método offline utilizou-se o algoritmo DTW e para o método online utilizou-se o algoritmo IMM, que realiza o chaveamento de modelos de filtros de Kalman por Cadeia de Markov. 
 
 # Dependências 
 
