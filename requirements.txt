@@ -1,0 +1,15 @@
+dtw==1.4.0
+fastdtw==0.3.4
+filterpy==1.4.5
+matplotlib==3.3.3
+opencv-contrib-python==4.5.1.48
+scipy==1.6.0
+pandas
+numpy
+pykalman
+math
+pathlib
+os
+sys
+collections
+re
