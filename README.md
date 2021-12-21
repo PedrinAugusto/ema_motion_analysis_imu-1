@@ -25,7 +25,9 @@ O projeto foi realizado de duas maneiras, fazendo a análise do movimento após 
 Uma opção de rápida instalação das dependências é utilizando o arquivo requiriments.txt com o seguinta comando: 
 
 '''Python
+
 pip install -r requiriments.txt
+
 '''
 
 Outra possibilidade é criando um [ambiente virtual](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/), para utilizar as importações sem interferir nas do sistema. Dessa forma é criado um ambiente novo onde é instaladas as bibliotecas para esse projeto
